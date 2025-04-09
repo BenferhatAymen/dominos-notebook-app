@@ -62,7 +62,7 @@ class MatchHistoryScreen extends StatelessWidget {
                     child: Icon(
                       Icons.delete_rounded,
                       color: Colors.red.withOpacity(0.9),
-                      size: 26,
+                      size: 27
                     ),
                   ),
                   onPressed: () {},
