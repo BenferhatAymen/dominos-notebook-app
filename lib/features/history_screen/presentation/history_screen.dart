@@ -1,8 +1,22 @@
+import 'package:dominos_notebook/core/constants.dart';
+import 'package:dominos_notebook/features/history_screen/presentation/widgets/delete_history_dialog.dart';
+import 'package:dominos_notebook/features/history_screen/presentation/widgets/history_score_card.dart';
+import 'package:dominos_notebook/features/home_screen/logic/reset_history.dart';
+import 'package:dominos_notebook/shared/models/team_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MatchHistoryScreen extends StatelessWidget {
+import '../../../shared/models/game_model.dart';
+
+class MatchHistoryScreen extends StatefulWidget {
   MatchHistoryScreen({super.key});
+
+  @override
+  State<MatchHistoryScreen> createState() => _MatchHistoryScreenState();
+}
+
+class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
+  List<Game> games = historyGames;
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +25,23 @@ class MatchHistoryScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: HistoryScreenAppBar(size, context),
       body: Center(
-        child: HistoryScoreCard(size: size),
-      ),
+          child: games.length != 0
+              ? ListView.builder(
+                  itemCount: games.length,
+                  itemBuilder: (context, index) {
+                    return HistoryScoreCard(
+                      size: size,
+                      game: games[index],
+                    );
+                  })
+              : Text(
+                  "Play games to fill the history!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )),
     );
   }
 
@@ -59,110 +88,27 @@ class MatchHistoryScreen extends StatelessWidget {
                       color: Color(0xffD9D9D9).withOpacity(0.25),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(
-                      Icons.delete_rounded,
-                      color: Colors.red.withOpacity(0.9),
-                      size: 27
-                    ),
+                    child: Icon(Icons.delete_rounded,
+                        color: Colors.red.withOpacity(0.9), size: 27),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeleteHistoryDialog(
+                            onSave: () {
+                              setState(() {
+                                resetHistory();
+                              });
+                            },
+                          );
+                        });
+                  },
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class HistoryScoreCard extends StatelessWidget {
-  const HistoryScoreCard({
-    super.key,
-    required this.size,
-  });
-
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 24, right: 24),
-      height: 50,
-      width: size.width * 0.95,
-      decoration: BoxDecoration(
-        color: Color(0xff888888).withOpacity(0.2),
-        borderRadius: BorderRadius.circular(36),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            height: 50,
-            child: Row(
-              children: [
-                Container(
-                  width: size.width * 0.32,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Aymen",
-                        style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Spacer(),
-                      Text(
-                        "150",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Spacer(),
-                Container(
-                  width: size.width * 0.32,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "15",
-                        style: TextStyle(
-                            color: Color(0xffFF3B30).withOpacity(0.5),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Spacer(),
-                      Text(
-                        "Tayfor",
-                        style: TextStyle(
-                          color: Color(0xffFF3B30).withOpacity(0.5),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              "vs",
-              style: TextStyle(
-                color: Color(0xffFFFFFF).withOpacity(0.4),
-                fontSize: 20,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

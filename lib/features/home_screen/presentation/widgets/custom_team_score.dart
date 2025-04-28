@@ -1,23 +1,30 @@
+import 'package:dominos_notebook/features/home_screen/logic/hive_functions.dart';
+import 'package:dominos_notebook/features/home_screen/presentation/widgets/edit_name_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../shared/models/team_model.dart';
 
 class CustomTeamScore extends StatefulWidget {
-  const CustomTeamScore({
-    super.key,
-    required this.size,
-    required this.currentTeam,
-    required this.opponentTeam,
-    required this.teamColor,
-    required this.onAddPoints
-  });
+  CustomTeamScore(
+      {super.key,
+      required this.size,
+      required this.currentTeam,
+      required this.opponentTeam,
+      required this.teamColor,
+      required this.onAddPoints,
+      required this.currentTeamNameController,
+      required this.box});
 
   final Size size;
   final Team currentTeam;
   final Team opponentTeam;
   final MaterialColor teamColor;
   final Function(int) onAddPoints;
+  final TextEditingController currentTeamNameController;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final Box<dynamic> box;
 
   @override
   State<CustomTeamScore> createState() => _CustomTeamScoreState();
@@ -40,39 +47,76 @@ class _CustomTeamScoreState extends State<CustomTeamScore> {
               16,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.currentTeam.name,
-                    style: GoogleFonts.inter(
-                      color: widget.teamColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+          child: Form(
+            key: widget.formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return EditNameDialog(
+                              controller: widget.currentTeamNameController,
+                              onSave: () {
+                                if (widget.formKey.currentState!.validate()) {
+                                  try {
+                                    setState(() {
+                                      widget.currentTeam.name =
+                                          widget.currentTeamNameController.text;
+                                      if (widget.teamColor == Colors.blue) {
+                                        writeTeamA(
+                                            widget.box, widget.currentTeam);
+                                        writeTeamB(
+                                            widget.box, widget.opponentTeam);
+                                      } else {
+                                        writeTeamB(
+                                            widget.box, widget.currentTeam);
+                                        writeTeamA(
+                                            widget.box, widget.opponentTeam);
+                                      }
+                                    });
+                                  } catch (e, stackTrace) {
+                                    print('Error: $e');
+                                    print('StackTrace: $stackTrace');
+                                  }
+                                }
+                              });
+                        });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.currentTeam.name,
+                        style: GoogleFonts.inter(
+                          color: widget.teamColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        width: widget.size.width * 0.02,
+                      ),
+                      Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 12,
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    width: widget.size.width * 0.02,
-                  ),
-                  Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                    size: 12,
-                  )
-                ],
-              ),
-              Text(
-                widget.currentTeam.getPoints().toString(),
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 48,
-                  fontWeight: FontWeight.w600,
                 ),
-              ),
-            ],
+                Text(
+                  widget.currentTeam.getPoints().toString(),
+                  style: GoogleFonts.inter(
+                    color: Colors.white,
+                    fontSize: 48,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(
@@ -91,8 +135,8 @@ class _CustomTeamScoreState extends State<CustomTeamScore> {
               color: widget.teamColor,
               size: 35,
             ),
-            onPressed:(){
-               widget.onAddPoints(10);
+            onPressed: () {
+              widget.onAddPoints(10);
             },
           ),
         )
