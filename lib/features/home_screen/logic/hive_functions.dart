@@ -14,3 +14,7 @@ void writeTeamB(Box<dynamic> box, Team teamB) {
   print(box.get("TeamB"));
 }
 
+void resetHiveHistory() {
+  var box = Hive.box("dominos");
+  box.delete("History");
+}

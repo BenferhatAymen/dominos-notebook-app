@@ -7,15 +7,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../shared/models/team_model.dart';
 
 class CustomTeamScore extends StatefulWidget {
-  CustomTeamScore(
-      {super.key,
-      required this.size,
-      required this.currentTeam,
-      required this.opponentTeam,
-      required this.teamColor,
-      required this.onAddPoints,
-      required this.currentTeamNameController,
-      required this.box});
+  CustomTeamScore({
+    super.key,
+    required this.size,
+    required this.currentTeam,
+    required this.opponentTeam,
+    required this.teamColor,
+    required this.onAddPoints,
+    required this.currentTeamNameController,
+    required this.box,
+  });
 
   final Size size;
   final Team currentTeam;
@@ -23,7 +24,7 @@ class CustomTeamScore extends StatefulWidget {
   final MaterialColor teamColor;
   final Function(int) onAddPoints;
   final TextEditingController currentTeamNameController;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   final Box<dynamic> box;
 
   @override
@@ -31,6 +32,22 @@ class CustomTeamScore extends StatefulWidget {
 }
 
 class _CustomTeamScoreState extends State<CustomTeamScore> {
+  final GlobalKey<FormState> blueformKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> redformKey = GlobalKey<FormState>();
+  late GlobalKey<FormState> formKey;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.teamColor == Colors.blue) {
+      formKey = blueformKey;
+      print("form1");
+    } else {
+      formKey = redformKey;
+      print('form2');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,7 +65,7 @@ class _CustomTeamScoreState extends State<CustomTeamScore> {
             ),
           ),
           child: Form(
-            key: widget.formKey,
+            key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -58,9 +75,10 @@ class _CustomTeamScoreState extends State<CustomTeamScore> {
                         context: context,
                         builder: (BuildContext context) {
                           return EditNameDialog(
+                              formKey: GlobalKey<FormState>(),
                               controller: widget.currentTeamNameController,
                               onSave: () {
-                                if (widget.formKey.currentState!.validate()) {
+                              
                                   try {
                                     setState(() {
                                       widget.currentTeam.name =
@@ -81,7 +99,7 @@ class _CustomTeamScoreState extends State<CustomTeamScore> {
                                     print('Error: $e');
                                     print('StackTrace: $stackTrace');
                                   }
-                                }
+                               
                               });
                         });
                   },

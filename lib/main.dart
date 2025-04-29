@@ -11,8 +11,8 @@ void main() async {
   Hive.registerAdapter(TeamAdapter());
   Hive.registerAdapter(GameAdapter());
   await Hive.openBox("dominos");
-    // var mainbox = Hive.box("dominos");
-    // mainbox.clear();
+  // var mainbox = Hive.box("dominos");
+  // mainbox.clear();
   runApp(DominosNoteBookApp());
 }
 

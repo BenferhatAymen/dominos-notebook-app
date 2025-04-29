@@ -1,10 +1,12 @@
 import 'package:dominos_notebook/core/constants.dart';
+import 'package:dominos_notebook/features/history_screen/logic/hive_history.dart';
 import 'package:dominos_notebook/features/history_screen/presentation/widgets/delete_history_dialog.dart';
 import 'package:dominos_notebook/features/history_screen/presentation/widgets/history_score_card.dart';
 import 'package:dominos_notebook/features/home_screen/logic/reset_history.dart';
 import 'package:dominos_notebook/shared/models/team_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../shared/models/game_model.dart';
 
@@ -16,14 +18,29 @@ class MatchHistoryScreen extends StatefulWidget {
 }
 
 class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
-  List<Game> games = historyGames;
+  Box<dynamic> mainbox = Hive.box("dominos");
+  late List<dynamic> games;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    games = readHistory(mainbox);
+    print(games);
+  }
+
+  void resetHistoryState() {
+    setState(() {
+      resetHistory();
+      games = [];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: HistoryScreenAppBar(size, context),
+      appBar: HistoryScreenAppBar(size, context, resetHistoryState),
       body: Center(
           child: games.length != 0
               ? ListView.builder(
@@ -45,7 +62,8 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
     );
   }
 
-  PreferredSize HistoryScreenAppBar(Size size, BuildContext context) {
+  PreferredSize HistoryScreenAppBar(
+      Size size, BuildContext context, void Function()? onSave) {
     return PreferredSize(
       preferredSize: Size.fromHeight(size.height * 0.2),
       child: Container(
@@ -96,11 +114,13 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return DeleteHistoryDialog(
-                            onSave: () {
-                              setState(() {
-                                resetHistory();
-                              });
-                            },
+                            onSave: onSave,
+                            // () {
+                            //   setState(() {
+                            //     resetHistory();
+                            //     historyGames = [];
+                            //   });
+                            // },
                           );
                         });
                   },

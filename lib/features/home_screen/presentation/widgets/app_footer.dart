@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../shared/models/team_model.dart';
 import '../../../history_screen/presentation/history_screen.dart';
 import 'custom_buttons.dart';
 
 class AppFooter extends StatelessWidget {
-  AppFooter(
-      {super.key,
-      required this.size,
-      this.onSave});
+  AppFooter({super.key, required this.size, this.onSave});
 
   final Size size;
-void Function()? onSave;
+  void Function()? onSave;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,7 @@ void Function()? onSave;
           Expanded(
               child: CustomRestartButton(
             size: size,
-           onSave: onSave,
+            onSave: onSave,
           )),
           SizedBox(
             width: size.width * 0.05,
@@ -49,7 +47,10 @@ void Function()? onSave;
               color: Colors.yellow,
               size: 44,
             ),
-            onPressed: () {},
+            onPressed: () {
+              var box = Hive.box("dominos");
+              print(box.get("TeamA"));
+            },
           ),
         ],
       ),
