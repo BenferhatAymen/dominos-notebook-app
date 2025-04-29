@@ -39,7 +39,14 @@ lib/
 │── main.dart
 ```
 
+
 ## Screenshots
+
+### Home Screen
+![Home Screen](screenshots/home_screen.jpg)
+
+### History Screen
+![History Screen](screenshots/history_screen.jpg)
 
 ## Licence
 
