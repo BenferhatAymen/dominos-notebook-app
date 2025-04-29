@@ -48,6 +48,12 @@ lib/
 ### History Screen
 ![History Screen](screenshots/history_screen.jpg)
 
+
+## Download
+You can download the app from the following link:
+
+[Download Domino's Notebook](https://www.mediafire.com/file/uorgunjres91pfv/app-arm64-v8a-release.apk/file)
+
 ## Licence
 
 Copyright (c) 2025 Benferhat Aymen
