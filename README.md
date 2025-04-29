@@ -24,7 +24,7 @@ flutter run
 ```
 
 ## Project Structure 
-
+```
 lib/
 ├── core/
 ├── features/
@@ -37,6 +37,7 @@ lib/
 ├── shared/
 │   └── models/
 │── main.dart
+```
 
 ## Screenshots
 
