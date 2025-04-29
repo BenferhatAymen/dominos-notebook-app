@@ -1,16 +1,49 @@
-# dominos_notebook
+# Dominos Notebook
 
-A new Flutter project.
+A simple Flutter app to keep track of team scores while playing Dominos.
+
+## Features
+
+- Edit team names
+- Add points
+- Reset scores
+- Data saved locally using Hive
+
+## Tech Stack
+
+- Flutter
+- Hive for local storage
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```bash
+git clone https://github.com/yourusername/dominos-notebook-app.git
+cd dominos-notebook-app
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Project Structure 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+lib/
+├── core/
+├── features/
+│   ├── home_screen/
+│   │   ├── logic/
+│   │   └── presentation/
+│   └── history_screen/
+│       ├── logic/
+│       └── presentation/
+├── shared/
+│   └── models/
+│── main.dart
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshots
+
+## Licence
+
+Copyright (c) 2025 Benferhat Aymen
+
+Permission is granted to use, copy, modify, and distribute this software for any purpose with or without fee.
+
+The software is provided "as is", without warranty of any kind.
