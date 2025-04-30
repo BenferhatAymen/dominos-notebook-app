@@ -52,7 +52,7 @@ lib/
 ## Download
 You can download the app from the following link:
 
-[Download Domino's Notebook](https://www.mediafire.com/file/uorgunjres91pfv/app-arm64-v8a-release.apk/file)
+[Download Domino's Notebook](https://www.mediafire.com/file/ztct5fq8da75hnc/app-arm64-v8a-release%25282%2529.apk/file)
 
 ## Licence
 
